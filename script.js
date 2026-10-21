@@ -860,3 +860,38 @@ supabaseClient.auth.onAuthStateChange(() => {
 });
 
 updateAuthUI();
+
+
+/* CIPTA HOUSEHOLD SENDIRI */
+
+async function createFamilyHousehold() {
+  const { data: { session } } =
+    await supabaseClient.auth.getSession();
+
+  if (!session) {
+    alert("Sila login dahulu.");
+    return;
+  }
+
+  const familyName = prompt(
+    "Masukkan nama keluarga anda:"
+  );
+
+  if (!familyName || !familyName.trim()) {
+    return;
+  }
+
+  const { data, error } = await supabaseClient.rpc(
+    "create_household",
+    { p_name: familyName.trim() }
+  );
+
+  if (error) {
+    alert("Gagal cipta keluarga: " + error.message);
+    return;
+  }
+
+  alert("Keluarga berjaya dicipta!");
+  console.log("Household ID:", data);
+}
+
