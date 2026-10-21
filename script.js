@@ -781,3 +781,82 @@ monthPicker.value = localDateString().slice(0, 7);
 $("expenseDate").value = localDateString();
 
 render();
+
+/* ========================================
+   LOGIN DAN DAFTAR AKAUN DUITKITA
+======================================== */
+
+const authForm = document.getElementById("authForm");
+const signupBtn = document.getElementById("signupBtn");
+const authMessage = document.getElementById("authMessage");
+
+authForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  const email = document.getElementById("authEmail").value.trim();
+  const password = document.getElementById("authPassword").value;
+
+  authMessage.textContent = "Sedang login...";
+
+  const { error } = await supabaseClient.auth.signInWithPassword({
+    email,
+    password
+  });
+
+  if (error) {
+    authMessage.textContent = "Login gagal: " + error.message;
+    return;
+  }
+
+  authMessage.textContent = "Login berjaya!";
+});
+
+signupBtn.addEventListener("click", async () => {
+  const email = document.getElementById("authEmail").value.trim();
+  const password = document.getElementById("authPassword").value;
+
+  if (!email || password.length < 6) {
+    authMessage.textContent =
+      "Masukkan email dan kata laluan sekurang-kurangnya 6 aksara.";
+    return;
+  }
+
+  authMessage.textContent = "Sedang daftar akaun...";
+
+  const { error } = await supabaseClient.auth.signUp({
+    email,
+    password
+  });
+
+  if (error) {
+    authMessage.textContent = "Pendaftaran gagal: " + error.message;
+    return;
+  }
+
+  authMessage.textContent =
+    "Permohonan daftar dihantar. Semak email jika pengesahan diperlukan.";
+});
+
+/* KAWAL PAPARAN LOGIN DAN DASHBOARD */
+
+async function updateAuthUI() {
+  const { data: { session } } =
+    await supabaseClient.auth.getSession();
+
+  const authPanel = document.getElementById("authPanel");
+  const dashboard = document.getElementById("dashboard");
+
+  if (session) {
+    authPanel.style.display = "none";
+    dashboard.style.display = "";
+  } else {
+    authPanel.style.display = "";
+    dashboard.style.display = "none";
+  }
+}
+
+supabaseClient.auth.onAuthStateChange(() => {
+  updateAuthUI();
+});
+
+updateAuthUI();

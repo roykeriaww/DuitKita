@@ -18,8 +18,31 @@
     </a>
     <span class="local-badge">● DATA PERIBADI</span>
   </header>
+  
+    <section id="authPanel" class="panel" style="max-width:480px;margin:24px auto;">
+      <div class="panel-heading">
+        <div>
+          <p class="eyebrow">AKAUN KELUARGA</p>
+          <h2>Login DuitKita</h2>
+        </div>
+        <span class="heading-icon">🔐</span>
+      </div>
 
-  <main class="container">
+      <form id="authForm" class="form-grid">
+        <label>Email
+          <input id="authEmail" type="email" placeholder="nama@email.com" required>
+        </label>
+        <label>Kata laluan
+          <input id="authPassword" type="password" minlength="6" placeholder="Minimum 6 aksara" required>
+        </label>
+        <button class="btn btn-primary full-width" type="submit">Login</button>
+        <button id="signupBtn" class="btn btn-secondary full-width" type="button">Daftar akaun baru</button>
+        <p id="authMessage" class="hint full-width" aria-live="polite"></p>
+      </form>
+    </section>
+
+
+  <main id="dashboard" class="container" style="display:none;">
     <section class="welcome">
       <div>
         <p class="eyebrow">DASHBOARD BULANAN</p>
