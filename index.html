@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#10251d">
+  <title>DuitKita — Kewangan Keluarga</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <a class="brand" href="#">
+      <span class="brand-icon">₿</span>
+      <span>Duit<span class="green">Kita</span>
+        <small>KEWANGAN KELUARGA</small>
+      </span>
+    </a>
+    <span class="local-badge">● DATA PERIBADI</span>
+  </header>
+
+  <main class="container">
+    <section class="welcome">
+      <div>
+        <p class="eyebrow">DASHBOARD BULANAN</p>
+        <h1>Urus duit bersama.</h1>
+        <p class="muted">Rancang hari ini, supaya hujung bulan lebih tenang.</p>
+      </div>
+      <label class="month-control">
+        Bulan
+        <input type="month" id="monthPicker">
+      </label>
+    </section>
+
+    <section class="summary-grid">
+      <article class="summary-card income-card">
+        <span>Jumlah pendapatan</span>
+        <div class="summary-icon">↗</div>
+        <h2 id="totalIncome">RM0.00</h2>
+        <small>Gaji bersih suami + isteri</small>
+      </article>
+
+      <article class="summary-card">
+        <span>Hutang & komitmen</span>
+        <div class="summary-icon">▤</div>
+        <h2 id="totalCommitments">RM0.00</h2>
+        <small>Komitmen bulanan</small>
+      </article>
+
+      <article class="summary-card">
+        <span>Perbelanjaan</span>
+        <div class="summary-icon">↘</div>
+        <h2 id="totalExpenses">RM0.00</h2>
+        <small>Belanja bulan dipilih</small>
+      </article>
+
+      <article class="summary-card balance-card">
+        <span>Baki anggaran</span>
+        <div class="summary-icon">◎</div>
+        <h2 id="balance">RM0.00</h2>
+        <small id="balanceNote">Selepas komitmen dan belanja</small>
+      </article>
+    </section>
+
+    <section id="alerts" class="alerts" aria-live="polite"></section>
+
+    <div class="main-grid">
+      <section class="panel">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">TETAPAN</p>
+            <h2>Pendapatan keluarga</h2>
+          </div>
+          <span class="heading-icon">👨‍👩‍👧</span>
+        </div>
+
+        <form id="incomeForm" class="form-grid">
+          <label>Gaji bersih suami (RM)
+            <input id="husbandIncome" type="number" min="0" step="0.01"
+              placeholder="3000" required>
+          </label>
+          <label>Gaji bersih isteri (RM)
+            <input id="wifeIncome" type="number" min="0" step="0.01"
+              placeholder="2500" required>
+          </label>
+          <button class="btn btn-primary full-width" type="submit">
+            Simpan pendapatan
+          </button>
+        </form>
+      </section>
+
+      <section class="panel">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">KOMITMEN</p>
+            <h2>Hutang & bayaran tetap</h2>
+          </div>
+          <span class="heading-icon">🏠</span>
+        </div>
+
+        <form id="commitmentForm" class="form-grid">
+          <label>Nama komitmen
+            <input id="commitmentName" placeholder="Contoh: Kereta" required>
+          </label>
+          <label>Bayaran bulanan (RM)
+            <input id="commitmentAmount" type="number" min="0.01"
+              step="0.01" placeholder="600" required>
+          </label>
+          <button class="btn btn-secondary full-width" type="submit">
+            + Tambah komitmen
+          </button>
+        </form>
+        <div id="commitmentList" class="simple-list"></div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">KAWAL BELANJA</p>
+            <h2>Bajet kategori</h2>
+          </div>
+          <span class="heading-icon">🎯</span>
+        </div>
+
+        <form id="budgetForm" class="form-grid">
+          <label>Kategori
+            <select id="budgetCategory">
+              <option value="Makanan">Makanan</option>
+              <option value="Barang dapur">Barang dapur</option>
+              <option value="Minyak & pengangkutan">Minyak & pengangkutan</option>
+              <option value="Bil rumah">Bil rumah</option>
+              <option value="Anak & keluarga">Anak & keluarga</option>
+              <option value="Kesihatan">Kesihatan</option>
+              <option value="Shopping">Shopping</option>
+              <option value="Lain-lain">Lain-lain</option>
+            </select>
+          </label>
+          <label>Bajet bulanan (RM)
+            <input id="budgetAmount" type="number" min="0.01"
+              step="0.01" placeholder="800" required>
+          </label>
+          <button class="btn btn-secondary full-width" type="submit">
+            Simpan bajet
+          </button>
+        </form>
+        <div id="budgetList" class="budget-list"></div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">REKOD DUIT KELUAR</p>
+            <h2>Tambah perbelanjaan</h2>
+          </div>
+          <span class="heading-icon">🧾</span>
+        </div>
+
+        <form id="expenseForm" class="form-grid">
+          <label>Perkara
+            <input id="expenseName" placeholder="Contoh: Makan tengah hari" required>
+          </label>
+          <label>Jumlah (RM)
+            <input id="expenseAmount" type="number" min="0.01"
+              step="0.01" placeholder="25" required>
+          </label>
+          <label>Kategori
+            <select id="expenseCategory">
+              <option value="Makanan">Makanan</option>
+              <option value="Barang dapur">Barang dapur</option>
+              <option value="Minyak & pengangkutan">Minyak & pengangkutan</option>
+              <option value="Bil rumah">Bil rumah</option>
+              <option value="Anak & keluarga">Anak & keluarga</option>
+              <option value="Kesihatan">Kesihatan</option>
+              <option value="Shopping">Shopping</option>
+              <option value="Lain-lain">Lain-lain</option>
+            </select>
+          </label>
+          <label>Dibelanjakan oleh
+            <select id="expensePerson">
+              <option value="Suami">Suami</option>
+              <option value="Isteri">Isteri</option>
+              <option value="Bersama">Bersama</option>
+            </select>
+          </label>
+          <label>Tarikh
+            <input id="expenseDate" type="date" required>
+          </label>
+
+          <label class="receipt-label">
+            Gambar resit (pilihan)
+            <input id="receiptInput" type="file" accept="image/*">
+          </label>
+          <div id="receiptPreview" class="receipt-preview hidden"></div>
+          <p class="hint full-width">
+            Buat masa ini gambar hanya untuk rujukan. Jumlah perlu diisi sendiri;
+            bacaan resit automatik belum diaktifkan.
+          </p>
+          <button class="btn btn-primary full-width" type="submit">
+            + Simpan perbelanjaan
+          </button>
+        </form>
+      </section>
+    </div>
+
+    <section class="panel transactions-panel">
+      <div class="panel-heading">
+        <div>
+          <p class="eyebrow">SEJARAH</p>
+          <h2>Rekod perbelanjaan</h2>
+        </div>
+        <span id="recordCount" class="count-badge">0 rekod</span>
+      </div>
+
+      <div id="expenseList" class="expense-list"></div>
+    </section>
+
+    <footer>
+      <p>DuitKita · Prototaip kewangan keluarga</p>
+      <p>Data disimpan dalam pelayar peranti ini. Belum dikongsi antara telefon.</p>
+      <button id="exportBtn" class="btn btn-secondary">Muat turun data CSV</button>
+    </footer>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="script.js"></script>
+</body>
+</html>
